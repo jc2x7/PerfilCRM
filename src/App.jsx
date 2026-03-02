@@ -9,10 +9,14 @@ import ColetaSolo from './pages/ColetaSolo';
 import Regulagem from './pages/Regulagem';
 import Tecnologia from './pages/Tecnologia';
 import Relatorios from './pages/Relatorios';
+import FunilVendas from './pages/FunilVendas';
+import Prospeccao from './pages/Prospeccao';
 
 const pageTitles = {
   '/': 'Dashboard',
   '/agenda': 'Agenda',
+  '/prospeccao': 'Prospecção de Clientes',
+  '/funil-vendas': 'Funil de Vendas',
   '/clientes': 'Produtores',
   '/coleta-solo': 'Coleta de Solo',
   '/regulagem': 'Regulagem de Máquinas',
@@ -36,6 +40,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/agenda" element={<Agenda />} />
+            <Route path="/prospeccao" element={<Prospeccao />} />
+            <Route path="/funil-vendas" element={<FunilVendas />} />
             <Route path="/clientes" element={<Clientes />} />
             <Route path="/coleta-solo" element={<ColetaSolo />} />
             <Route path="/regulagem" element={<Regulagem />} />

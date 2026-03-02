@@ -8,16 +8,40 @@ import {
   Satellite,
   FileBarChart,
   Leaf,
+  Funnel,
+  UserPlus,
 } from 'lucide-react';
 
-const links = [
-  { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/agenda', icon: CalendarDays, label: 'Agenda' },
-  { to: '/clientes', icon: Users, label: 'Produtores' },
-  { to: '/coleta-solo', icon: FlaskConical, label: 'Coleta de Solo' },
-  { to: '/regulagem', icon: Wrench, label: 'Regulagem' },
-  { to: '/tecnologia', icon: Satellite, label: 'Tecnologia' },
-  { to: '/relatorios', icon: FileBarChart, label: 'Relatórios' },
+const sections = [
+  {
+    title: null,
+    links: [
+      { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
+      { to: '/agenda', icon: CalendarDays, label: 'Agenda' },
+    ],
+  },
+  {
+    title: 'Comercial',
+    links: [
+      { to: '/prospeccao', icon: UserPlus, label: 'Prospecção' },
+      { to: '/funil-vendas', icon: Funnel, label: 'Funil de Vendas' },
+      { to: '/clientes', icon: Users, label: 'Produtores' },
+    ],
+  },
+  {
+    title: 'Serviços',
+    links: [
+      { to: '/coleta-solo', icon: FlaskConical, label: 'Coleta de Solo' },
+      { to: '/regulagem', icon: Wrench, label: 'Regulagem' },
+      { to: '/tecnologia', icon: Satellite, label: 'Tecnologia' },
+    ],
+  },
+  {
+    title: 'Gestão',
+    links: [
+      { to: '/relatorios', icon: FileBarChart, label: 'Relatórios' },
+    ],
+  },
 ];
 
 export default function Sidebar({ open, onClose }) {
@@ -45,20 +69,31 @@ export default function Sidebar({ open, onClose }) {
           </div>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {links.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              onClick={onClose}
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? 'sidebar-link-active' : 'sidebar-link-inactive'}`
-              }
-              end={link.to === '/'}
-            >
-              <link.icon className="w-5 h-5 shrink-0" />
-              {link.label}
-            </NavLink>
+        <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
+          {sections.map((section, idx) => (
+            <div key={idx}>
+              {section.title && (
+                <p className="text-[10px] uppercase tracking-wider text-perfil-300/70 font-semibold px-4 mb-1.5">
+                  {section.title}
+                </p>
+              )}
+              <div className="space-y-0.5">
+                {section.links.map((link) => (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                      `sidebar-link ${isActive ? 'sidebar-link-active' : 'sidebar-link-inactive'}`
+                    }
+                    end={link.to === '/'}
+                  >
+                    <link.icon className="w-5 h-5 shrink-0" />
+                    {link.label}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
 
