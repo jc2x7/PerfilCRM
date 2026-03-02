@@ -11,6 +11,7 @@ import Tecnologia from './pages/Tecnologia';
 import Relatorios from './pages/Relatorios';
 import FunilVendas from './pages/FunilVendas';
 import Prospeccao from './pages/Prospeccao';
+import AnaliseSolo from './pages/AnaliseSolo';
 
 const pageTitles = {
   '/': 'Dashboard',
@@ -21,6 +22,7 @@ const pageTitles = {
   '/coleta-solo': 'Coleta de Solo',
   '/regulagem': 'Regulagem de Máquinas',
   '/tecnologia': 'Tecnologia de Aplicação',
+  '/analise-solo': 'Análise de Solo',
   '/relatorios': 'Relatórios',
 };
 
@@ -46,6 +48,7 @@ export default function App() {
             <Route path="/coleta-solo" element={<ColetaSolo />} />
             <Route path="/regulagem" element={<Regulagem />} />
             <Route path="/tecnologia" element={<Tecnologia />} />
+            <Route path="/analise-solo" element={<AnaliseSolo />} />
             <Route path="/relatorios" element={<Relatorios />} />
           </Routes>
         </main>

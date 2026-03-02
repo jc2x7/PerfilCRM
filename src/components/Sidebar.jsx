@@ -10,6 +10,7 @@ import {
   Leaf,
   Funnel,
   UserPlus,
+  TestTubeDiagonal,
 } from 'lucide-react';
 
 const sections = [
@@ -39,6 +40,7 @@ const sections = [
   {
     title: 'Gestão',
     links: [
+      { to: '/analise-solo', icon: TestTubeDiagonal, label: 'Análise de Solo' },
       { to: '/relatorios', icon: FileBarChart, label: 'Relatórios' },
     ],
   },
