@@ -1,8 +1,10 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons, Ionicons, Feather } from '@expo/vector-icons';
 import { Colors } from '../src/constants/theme';
+import { AuthProvider, useAuth } from '../src/contexts/AuthContext';
+import Login from './login';
 
 function DrawerHeader() {
   return (
@@ -19,15 +21,22 @@ function DrawerHeader() {
 }
 
 function DrawerFooter() {
+  const { user, signOut } = useAuth();
+  const nome = user?.user_metadata?.nome || user?.email?.split('@')[0] || 'Usuário';
+  const initials = nome.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2);
+
   return (
     <View style={styles.footer}>
       <View style={styles.avatar}>
-        <Text style={styles.avatarText}>JP</Text>
+        <Text style={styles.avatarText}>{initials}</Text>
       </View>
-      <View>
-        <Text style={styles.footerName}>João Paulo</Text>
-        <Text style={styles.footerRole}>Eng. Agrônomo</Text>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.footerName} numberOfLines={1}>{nome}</Text>
+        <Text style={styles.footerRole}>{user?.email}</Text>
       </View>
+      <TouchableOpacity onPress={signOut} style={{ padding: 4 }}>
+        <MaterialCommunityIcons name="logout" size={20} color={Colors.perfil[300]} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -88,7 +97,21 @@ function CustomDrawerContent(props) {
   );
 }
 
-export default function Layout() {
+function AppContent() {
+  const { session, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.perfil[700] }}>
+        <ActivityIndicator size="large" color={Colors.white} />
+      </View>
+    );
+  }
+
+  if (!session) {
+    return <Login />;
+  }
+
   const screenOpts = {
     headerStyle: { backgroundColor: Colors.white },
     headerTintColor: Colors.gray[800],
@@ -104,27 +127,38 @@ export default function Layout() {
   };
 
   return (
+    <Drawer
+      drawerContent={CustomDrawerContent}
+      screenOptions={{
+        ...screenOpts,
+        drawerStyle: { backgroundColor: Colors.perfil[700], width: 280 },
+        drawerActiveTintColor: Colors.white,
+        drawerInactiveTintColor: Colors.perfil[100],
+      }}
+    >
+      <Drawer.Screen name="index" options={{ title: 'Dashboard', drawerLabel: 'Dashboard', drawerIcon: icon('view-dashboard-outline') }} />
+      <Drawer.Screen name="agenda" options={{ title: 'Agenda', drawerLabel: 'Agenda', drawerIcon: icon('calendar-month-outline') }} />
+      <Drawer.Screen name="prospeccao" options={{ title: 'Prospecção', drawerLabel: 'Prospecção', drawerIcon: icon('account-plus-outline') }} />
+      <Drawer.Screen name="funil" options={{ title: 'Funil de Vendas', drawerLabel: 'Funil de Vendas', drawerIcon: icon('filter-outline') }} />
+      <Drawer.Screen name="clientes" options={{ title: 'Produtores', drawerLabel: 'Produtores', drawerIcon: icon('people-outline', 'ion') }} />
+      <Drawer.Screen name="coleta" options={{ title: 'Coleta de Solo', drawerLabel: 'Coleta de Solo', drawerIcon: icon('flask-outline') }} />
+      <Drawer.Screen name="regulagem" options={{ title: 'Regulagem', drawerLabel: 'Regulagem', drawerIcon: icon('wrench-outline') }} />
+      <Drawer.Screen name="tecnologia" options={{ title: 'Tecnologia', drawerLabel: 'Tecnologia', drawerIcon: icon('satellite-variant') }} />
+      <Drawer.Screen name="analise" options={{ title: 'Análise de Solo', drawerLabel: 'Análise de Solo', drawerIcon: icon('test-tube') }} />
+      <Drawer.Screen name="relatorios" options={{ title: 'Relatórios', drawerLabel: 'Relatórios', drawerIcon: icon('bar-chart-2', 'feather') }} />
+      {/* Hidden screens */}
+      <Drawer.Screen name="login" options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="cadastro-produtor" options={{ title: 'Cadastro de Produtor', drawerItemStyle: { display: 'none' } }} />
+    </Drawer>
+  );
+}
+
+export default function Layout() {
+  return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer
-        drawerContent={CustomDrawerContent}
-        screenOptions={{
-          ...screenOpts,
-          drawerStyle: { backgroundColor: Colors.perfil[700], width: 280 },
-          drawerActiveTintColor: Colors.white,
-          drawerInactiveTintColor: Colors.perfil[100],
-        }}
-      >
-        <Drawer.Screen name="index" options={{ title: 'Dashboard', drawerLabel: 'Dashboard', drawerIcon: icon('view-dashboard-outline') }} />
-        <Drawer.Screen name="agenda" options={{ title: 'Agenda', drawerLabel: 'Agenda', drawerIcon: icon('calendar-month-outline') }} />
-        <Drawer.Screen name="prospeccao" options={{ title: 'Prospecção', drawerLabel: 'Prospecção', drawerIcon: icon('account-plus-outline') }} />
-        <Drawer.Screen name="funil" options={{ title: 'Funil de Vendas', drawerLabel: 'Funil de Vendas', drawerIcon: icon('filter-outline') }} />
-        <Drawer.Screen name="clientes" options={{ title: 'Produtores', drawerLabel: 'Produtores', drawerIcon: icon('people-outline', 'ion') }} />
-        <Drawer.Screen name="coleta" options={{ title: 'Coleta de Solo', drawerLabel: 'Coleta de Solo', drawerIcon: icon('flask-outline') }} />
-        <Drawer.Screen name="regulagem" options={{ title: 'Regulagem', drawerLabel: 'Regulagem', drawerIcon: icon('wrench-outline') }} />
-        <Drawer.Screen name="tecnologia" options={{ title: 'Tecnologia', drawerLabel: 'Tecnologia', drawerIcon: icon('satellite-variant') }} />
-        <Drawer.Screen name="analise" options={{ title: 'Análise de Solo', drawerLabel: 'Análise de Solo', drawerIcon: icon('test-tube') }} />
-        <Drawer.Screen name="relatorios" options={{ title: 'Relatórios', drawerLabel: 'Relatórios', drawerIcon: icon('bar-chart-2', 'feather') }} />
-      </Drawer>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </GestureHandlerRootView>
   );
 }
