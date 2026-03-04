@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'rea
 import { MaterialCommunityIcons, Ionicons, Feather } from '@expo/vector-icons';
 import { Colors } from '../src/constants/theme';
 import { AuthProvider, useAuth } from '../src/contexts/AuthContext';
-import Login from './login';
+import LoginScreen from '../src/screens/LoginScreen';
 
 function DrawerHeader() {
   return (
@@ -109,7 +109,7 @@ function AppContent() {
   }
 
   if (!session) {
-    return <Login />;
+    return <LoginScreen />;
   }
 
   const screenOpts = {
@@ -147,7 +147,6 @@ function AppContent() {
       <Drawer.Screen name="analise" options={{ title: 'Análise de Solo', drawerLabel: 'Análise de Solo', drawerIcon: icon('test-tube') }} />
       <Drawer.Screen name="relatorios" options={{ title: 'Relatórios', drawerLabel: 'Relatórios', drawerIcon: icon('bar-chart-2', 'feather') }} />
       {/* Hidden screens */}
-      <Drawer.Screen name="login" options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="cadastro-produtor" options={{ title: 'Cadastro de Produtor', drawerItemStyle: { display: 'none' } }} />
     </Drawer>
   );
